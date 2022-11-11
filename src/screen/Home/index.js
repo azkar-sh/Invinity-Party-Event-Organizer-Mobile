@@ -1,7 +1,9 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import styles from './styles';
+
+import slidersIcon from '../../assets/images/sliders-icon.png';
 
 export default function Home() {
   return (
@@ -42,6 +44,9 @@ export default function Home() {
       {/* Events for You */}
       <View style={styles.eventContainer}>
         <Text style={styles.title}>Events For You</Text>
+        <TouchableOpacity style={styles.sliderBox}>
+          <Image source={slidersIcon} />
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

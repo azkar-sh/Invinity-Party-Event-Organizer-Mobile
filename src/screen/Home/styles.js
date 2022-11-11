@@ -27,7 +27,10 @@ export default StyleSheet.create({
     marginTop: 5,
   },
   eventContainer: {
-    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#FCFCFC',
     paddingHorizontal: 25,
     paddingVertical: 25,
     paddingBottom: '100%',
@@ -38,8 +41,19 @@ export default StyleSheet.create({
     marginTop: 225,
   },
   title: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#000',
+  },
+  sliderBox: {
+    // borderWidth: 1,
+    // borderColor: '#000',
+    // borderRadius: 10,
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: 100,
+    shadowRadius: 10,
+    shadowOpacity: 0.5,
   },
 });

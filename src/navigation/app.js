@@ -10,11 +10,19 @@ import Home from '../screen/Home';
 import Detail from '../screen/Detail';
 import Order from '../screen/Order';
 
+import DrawerContent from '../components/DrawerContent';
+import HomeHeader from '../components/Header/home';
+import DefaultHeader from '../components/Header/default';
+
 function MenuNavigator() {
   return (
     // List menu that will be shown on the left side of the screen when the drawer is opened
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={Home} />
+    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{header: props => <HomeHeader />}}
+      />
       <Drawer.Screen name="Detail" component={Detail} />
       <Drawer.Screen name="Order" component={Order} />
     </Drawer.Navigator>
