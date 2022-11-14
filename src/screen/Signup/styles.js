@@ -23,10 +23,13 @@ export default StyleSheet.create({
     marginBottom: 15,
   },
   showPassword: {
-    textAlign: 'right',
-    color: '#3366FF',
-    marginBottom: 10,
-    fontWeight: 'bold',
-    fontSize: 15,
+    position: 'absolute',
+    left: 325,
+    bottom: 30,
+  },
+  checkboxValidation: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
   },
 });

@@ -1,46 +1,37 @@
-import {ScrollView, Text, Image, View, ImageBackground} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  ScrollView,
+  Text,
+  Image,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import styles from './style';
 
-import event1 from '../../assets/images/event-1.png';
-import event2 from '../../assets/images/event-2.png';
 import arrowLeft from '../../assets/images/arrow-left.png';
 
-export default function EventCard() {
+export default function EventCard(props) {
+  const handleDetailEvent = () => {
+    console.log(props.navigation);
+    props.navigation.navigate('Detail Event');
+  };
+
   return (
-    <ScrollView horizontal={true} style={styles.container}>
+    <ScrollView style={styles.container}>
       <ImageBackground
-        source={event1}
+        source={props.data?.image}
         style={styles.image}
         imageStyle={{borderRadius: 20}}>
-        <Text style={styles.dateOverImage}>Wed, 15 Nov, 4:00 PM</Text>
-        <Text style={styles.titleOverImage}>Sights & Sounds Exhibition</Text>
-        {/* <TouchableOpacity style={styles.buttonOverImage}>
-          <Image source={arrowLeft} style={styles.imageButton} />
-        </TouchableOpacity> */}
-      </ImageBackground>
-
-      <ImageBackground
-        source={event2}
-        style={styles.image}
-        imageStyle={{borderRadius: 20}}>
-        <Text style={styles.dateOverImage}>Wed, 15 Nov, 4:00 PM</Text>
-        <Text style={styles.titleOverImage}>See it in Gold Class </Text>
-        {/* <TouchableOpacity style={styles.buttonOverImage}>
-          <Image source={arrowLeft} style={styles.imageButton} />
-        </TouchableOpacity> */}
-      </ImageBackground>
-
-      <ImageBackground
-        source={event1}
-        style={styles.image}
-        imageStyle={{borderRadius: 20}}>
-        <Text style={styles.dateOverImage}>Wed, 15 Nov, 4:00 PM</Text>
-        <Text style={styles.titleOverImage}>See it in Gold Class </Text>
-        {/* <TouchableOpacity style={styles.buttonOverImage}>
-          <Image source={arrowLeft} style={styles.imageButton} />
-        </TouchableOpacity> */}
+        <View style={styles.textOverlay}>
+          <Text style={styles.dateOverImage}>{props.data?.date}</Text>
+          <Text style={styles.titleOverImage}>{props.data?.title}</Text>
+          <TouchableOpacity
+            style={styles.buttonOverImage}
+            onPress={handleDetailEvent}>
+            <Image source={arrowLeft} style={styles.imageButton} />
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
     </ScrollView>
   );

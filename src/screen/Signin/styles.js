@@ -23,6 +23,11 @@ export default StyleSheet.create({
     marginBottom: 15,
   },
   showPassword: {
+    position: 'absolute',
+    left: 325,
+    bottom: 30,
+  },
+  forgotPassword: {
     textAlign: 'right',
     color: '#3366FF',
     marginBottom: 10,

@@ -19,7 +19,7 @@ export default StyleSheet.create({
     borderTopStartRadius: 25,
     paddingTop: 25,
     paddingBottom: 50,
-    height: 1000,
+    height: 700,
   },
   dateText: {
     color: 'white',
@@ -35,8 +35,8 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     position: 'absolute',
     width: '100%',
-    height: '100%',
     top: 225,
+    flexDirection: 'column',
   },
   eventTitle: {
     flexDirection: 'row',
@@ -48,6 +48,7 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000',
+    marginTop: 20,
   },
   sliderBox: {
     borderRadius: 10,
@@ -67,6 +68,7 @@ export default StyleSheet.create({
     padding: 10,
     marginRight: 20,
     marginLeft: 5,
+    marginBottom: 10,
     shadowColor: '#000',
     elevation: 5,
     height: 50,

@@ -1,7 +1,14 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+} from 'react-native';
 import React, {useState} from 'react';
-import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import BlueWhite from '../../components/CustomButton/blueWhite';
+import Icon from 'react-native-vector-icons/Feather';
 import styles from './styles';
 
 import GoogleIcon from '../../assets/images/google-icon.png';
@@ -27,14 +34,24 @@ export default function Signin(props) {
       {/* Auth Field */}
       <View style={styles.authField}>
         <TextInput placeholder="Email" style={styles.authForm} />
-        <TextInput
-          secureTextEntry={showPassword}
-          placeholder="Password"
-          style={styles.authForm}
-        />
+        <View>
+          <TextInput
+            secureTextEntry={showPassword}
+            placeholder="Password"
+            style={styles.authForm}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Icon
+              name={showPassword ? 'eye' : 'eye-off'}
+              size={18}
+              color="black"
+              style={styles.showPassword}
+            />
+          </TouchableOpacity>
+        </View>
 
         <Text
-          style={styles.showPassword}
+          style={styles.forgotPassword}
           onPress={() => handleNavAuth('Forgot Password')}>
           Forgot Password?
         </Text>

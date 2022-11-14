@@ -1,22 +1,20 @@
 import React from 'react';
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import Iconicons from 'react-native-vector-icons/Ionicons';
+import Materialicons from 'react-native-vector-icons/MaterialIcons';
 
-import notificationIcon from '../../assets/images/notification-icon.png';
-import burgerIcon from '../../assets/images/burger-icon.png';
-
-export default function HomeHeader(props) {
+export default function EventHeader(props) {
   const openDrawer = () => {
-    props.navigation.openDrawer();
+    props.navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={openDrawer}>
-        {/* <Text style={styles.textContainer}>HomeHeader</Text> */}
-        <Image source={burgerIcon} />
+        <Iconicons name="arrow-back" size={25} color="white" />
       </TouchableOpacity>
       <TouchableOpacity>
-        <Image source={notificationIcon} />
+        <Materialicons name="favorite-border" size={25} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -28,7 +26,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 15,
-    backgroundColor: '#3366FF',
   },
   textContainer: {
     color: '#FFFFFF',

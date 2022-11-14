@@ -9,40 +9,65 @@ import musicIcon from '../../assets/images/music-orange-icon.png';
 
 import EventCard from '../../components/EventCard';
 
-export default function Home() {
+export default function Home(props) {
+  const handleAppNav = path => {
+    props.navigation.navigate('AppScreen', {screen: path});
+  };
+
+  const dummyData = [
+    {
+      id: 1,
+      title: 'Sights & Sounds Exhibition',
+      date: 'Wed, 15 Nov, 4:00 PM',
+      image: require('../../assets/images/event-1.png'),
+    },
+    {
+      id: 2,
+      title: 'See it in Gold Class',
+      date: 'Wed, 15 Nov, 4:00 PM',
+      image: require('../../assets/images/event-2.png'),
+    },
+    {
+      id: 3,
+      title: 'Sights & Sounds Exhibition',
+      date: 'Wed, 15 Nov, 4:00 PM',
+      image: require('../../assets/images/event-1.png'),
+    },
+  ];
+
   return (
     <ScrollView style={styles.container}>
       <TextInput
         placeholder="Search Event"
-        placeholderColor="#FFFFFF"
+        placeholderTextColor="#FFFFFF"
         style={styles.form}
       />
       {/* Date Selection */}
       <View style={styles.dateContainer}>
-        <View>
+        <TouchableOpacity>
           <Text style={styles.dateText}>13</Text>
           <Text style={styles.dateText}>Mon</Text>
-        </View>
+        </TouchableOpacity>
 
-        <View>
+        <TouchableOpacity>
           <Text style={styles.dateText}>14</Text>
           <Text style={styles.dateText}>Tue</Text>
-        </View>
+        </TouchableOpacity>
 
-        <View>
+        <TouchableOpacity>
           <Text style={styles.dateText}>15</Text>
           <Text style={styles.dateText}>Wed</Text>
-        </View>
+        </TouchableOpacity>
 
-        <View>
+        <TouchableOpacity>
           <Text style={styles.dateText}>16</Text>
           <Text style={styles.dateText}>Thu</Text>
-        </View>
+        </TouchableOpacity>
 
-        <View>
+        <TouchableOpacity>
           <Text style={styles.dateText}>17</Text>
           <Text style={styles.dateText}>Fri</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.eventContainer}>
@@ -53,9 +78,15 @@ export default function Home() {
             <Image source={slidersIcon} />
           </TouchableOpacity>
         </View>
-        <View>
-          <EventCard />
-        </View>
+        <ScrollView horizontal={true}>
+          {dummyData.map(item => (
+            <EventCard
+              key={item.id}
+              data={item}
+              navigation={props.navigation}
+            />
+          ))}
+        </ScrollView>
 
         {/* Discover */}
         <Text style={styles.title}>Discover</Text>

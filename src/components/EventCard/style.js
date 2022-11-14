@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
-  container: {marginVertical: 30, flexDirection: 'row'},
+  container: {marginTop: 30, flexDirection: 'row'},
   linearGradient: {
     flex: 1,
     paddingLeft: 15,
@@ -13,26 +13,27 @@ export default StyleSheet.create({
     width: 200,
     height: 300,
   },
+  textOverlay: {
+    marginHorizontal: 15,
+    top: 160,
+  },
   dateOverImage: {
-    top: 220,
-    left: 20,
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: 'bold',
   },
   titleOverImage: {
-    top: 220,
-    left: 20,
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: 'bold',
+    lineHeight: 24,
+    letterSpacing: 1,
   },
   buttonOverImage: {
-    top: 44,
-    left: 20,
     backgroundColor: '#FC1055',
     borderRadius: 10,
     padding: 10,
     width: 40,
+    marginTop: 10,
   },
 });
