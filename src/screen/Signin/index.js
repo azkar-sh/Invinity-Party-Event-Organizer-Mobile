@@ -17,6 +17,7 @@ import FingerprintIcon from '../../assets/images/fingerprint-icon.png';
 
 export default function Signin(props) {
   const [showPassword, setShowPassword] = useState(true);
+  const [form, setForm] = useState({});
 
   const handleNavAuth = path => {
     props.navigation.navigate('AuthScreen', {screen: path});

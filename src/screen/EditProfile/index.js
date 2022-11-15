@@ -8,13 +8,8 @@ import {
 } from 'react-native';
 import React from 'react';
 import styles from './styles';
-import Icon from 'react-native-vector-icons/Feather';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import profilePicture from '../../assets/images/profile1.jpg';
-import addCard from '../../assets/images/add-card.png';
-import paymentCard from '../../assets/images/payment-card.png';
-import paymentCard2 from '../../assets/images/payment-card2.png';
 
 export default function EditProfile(props) {
   const handleAppNavigation = path => {
@@ -56,10 +51,48 @@ export default function EditProfile(props) {
         </View>
 
         <Text style={styles.labelForm}>Phone</Text>
-        <TextInput placeholder="081234567890" style={styles.form} />
+        <View style={styles.flexForm}>
+          <TextInput placeholder="081234567890" style={styles.form} />
+          <TouchableOpacity>
+            <Text style={styles.editForm}>Edit</Text>
+          </TouchableOpacity>
+        </View>
 
         <Text style={styles.labelForm}>Gender</Text>
-        <TextInput placeholder="Aziz Akbar Ashshiddiq" style={styles.form} />
+        <View style={styles.flexForm}>
+          <TextInput placeholder="Male" style={styles.form} />
+          <TouchableOpacity>
+            <Text style={styles.editForm}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.labelForm}>Profession</Text>
+        <View style={styles.flexForm}>
+          <TextInput placeholder="Developer Web" style={styles.form} />
+          <TouchableOpacity>
+            <Text style={styles.editForm}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.labelForm}>Nationality</Text>
+        <View style={styles.flexForm}>
+          <TextInput placeholder="Indonesia" style={styles.form} />
+          <TouchableOpacity>
+            <Text style={styles.editForm}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.labelForm}>Birthday Date</Text>
+        <View style={styles.flexForm}>
+          <TextInput placeholder="24/10/2000" style={styles.form} />
+          <TouchableOpacity>
+            <Text style={styles.editForm}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={styles.buyButton}>
+          <Text style={styles.textButton}>Save</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

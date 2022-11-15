@@ -13,7 +13,6 @@ import arrowLeft from '../../assets/images/arrow-left.png';
 
 export default function EventCard(props) {
   const handleDetailEvent = () => {
-    console.log(props.navigation);
     props.navigation.navigate('Detail Event');
   };
 

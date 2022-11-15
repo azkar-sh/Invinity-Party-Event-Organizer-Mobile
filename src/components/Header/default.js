@@ -7,8 +7,6 @@ export default function HomeHeader(props) {
     props.navigation.goBack();
   };
 
-  console.log(props);
-
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={openDrawer}>

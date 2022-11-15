@@ -68,4 +68,20 @@ export default StyleSheet.create({
     textDecorationLine: 'underline',
     letterSpacing: 1,
   },
+  buyButton: {
+    backgroundColor: '#3366FF',
+    width: '85%',
+    height: 50,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginVertical: 25,
+  },
+  textButton: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    letterSpacing: 1.5,
+  },
 });
