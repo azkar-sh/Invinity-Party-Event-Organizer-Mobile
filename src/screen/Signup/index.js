@@ -5,16 +5,33 @@ import BlueWhite from '../../components/CustomButton/blueWhite';
 import styles from './styles';
 import {Checkbox} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
+import axios from '../../utils/axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Signup(props) {
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(true);
+  const [checked, setChecked] = useState(false);
+  const [form, setForm] = useState({});
+
+  const handleChange = (name, value) => {
+    setForm({...form, [name]: value});
+  };
+
+  const handleSubmit = async data => {
+    // console.log(form);
+    try {
+      const result = await axios.post('auth/register', form);
+      alert(result.data.msg);
+      props.navigation.replace('AuthScreen', {screen: 'Login'});
+    } catch (error) {
+      alert(error.response.data.msg);
+    }
+  };
 
   const handleNav = () => {
     props.navigation.navigate('AuthScreen', {screen: 'Log In'});
   };
-
-  const [checked, setChecked] = useState(false);
 
   return (
     <ScrollView style={styles.signupContainer}>
@@ -29,13 +46,22 @@ export default function Signup(props) {
 
         {/* Auth Field */}
         <View style={styles.authField}>
-          <TextInput placeholder="Full Name" style={styles.authForm} />
-          <TextInput placeholder="Email" style={styles.authForm} />
+          <TextInput
+            placeholder="Username"
+            style={styles.authForm}
+            onChangeText={text => handleChange('username', text)}
+          />
+          <TextInput
+            placeholder="Email"
+            style={styles.authForm}
+            onChangeText={text => handleChange('email', text)}
+          />
           <View>
             <TextInput
               secureTextEntry={showPassword}
               placeholder="Password"
               style={styles.authForm}
+              onChangeText={text => handleChange('password', text)}
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Icon
@@ -51,6 +77,7 @@ export default function Signup(props) {
               secureTextEntry={showConfirmPassword}
               placeholder="Confirm Password"
               style={styles.authForm}
+              onChangeText={text => handleChange('confirmPassword', text)}
             />
             <TouchableOpacity
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
@@ -74,7 +101,11 @@ export default function Signup(props) {
             </Text>
           </View>
 
-          <BlueWhite text="Sign Up" disabled={checked ? false : true} />
+          <BlueWhite
+            text="Sign Up"
+            disabled={checked ? false : true}
+            onPress={handleSubmit}
+          />
         </View>
       </View>
     </ScrollView>

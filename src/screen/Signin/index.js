@@ -10,6 +10,8 @@ import React, {useState} from 'react';
 import BlueWhite from '../../components/CustomButton/blueWhite';
 import Icon from 'react-native-vector-icons/Feather';
 import styles from './styles';
+import axios from '../../utils/axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import GoogleIcon from '../../assets/images/google-icon.png';
 import FacebookIcon from '../../assets/images/facebook-icon.png';
@@ -19,12 +21,32 @@ export default function Signin(props) {
   const [showPassword, setShowPassword] = useState(true);
   const [form, setForm] = useState({});
 
+  const handleChange = (value, name) => {
+    setForm({...form, [name]: value});
+  };
+
   const handleNavAuth = path => {
     props.navigation.navigate('AuthScreen', {screen: path});
   };
 
   const handleNavHome = path => {
     props.navigation.navigate('AppScreen', {screen: path});
+  };
+
+  const handleLogin = async () => {
+    try {
+      const result = await axios.post('auth/login', form);
+      await AsyncStorage.setItem('userId', result.data.data.userId);
+      await AsyncStorage.setItem('token', result.data.data.token);
+      await AsyncStorage.setItem(
+        'resfreshToken',
+        result.data.data.refreshToken,
+      );
+      alert(result.data.msg);
+      props.navigation.replace('AppScreen', {screen: 'MenuNavigator'});
+    } catch (error) {
+      alert(error.response.data.msg);
+    }
   };
 
   return (
@@ -34,12 +56,17 @@ export default function Signin(props) {
 
       {/* Auth Field */}
       <View style={styles.authField}>
-        <TextInput placeholder="Email" style={styles.authForm} />
+        <TextInput
+          placeholder="Email"
+          style={styles.authForm}
+          onChangeText={text => handleChange(text, 'email')}
+        />
         <View>
           <TextInput
             secureTextEntry={showPassword}
             placeholder="Password"
             style={styles.authForm}
+            onChangeText={text => handleChange(text, 'password')}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Icon
@@ -57,7 +84,7 @@ export default function Signin(props) {
           Forgot Password?
         </Text>
 
-        <BlueWhite text="Log In" onPress={() => handleNavHome('Home')} />
+        <BlueWhite text="Log In" onPress={handleLogin} />
 
         <Text style={styles.signupSubtitle}>
           Don't Have an Account?{' '}
@@ -72,12 +99,14 @@ export default function Signin(props) {
 
         {/* Alternative Signin Container */}
         <View style={styles.signinAlternativeContainer}>
-          <View style={styles.signinAlternativeBox}>
+          <TouchableOpacity style={styles.signinAlternativeBox}>
             <Image source={GoogleIcon} style={styles.signinAlternativeIcon} />
-          </View>
-          <View style={styles.signinAlternativeBox}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.signinAlternativeBox}
+            onPress={() => handleNavHome('Home')}>
             <Image source={FacebookIcon} style={styles.signinAlternativeIcon} />
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.signinAlternativeBox}
             onPress={() => handleNavAuth('Touch ID')}>

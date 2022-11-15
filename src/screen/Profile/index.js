@@ -1,8 +1,10 @@
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import axios from '../../utils/axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import profilePicture from '../../assets/images/profile1.jpg';
 import addCard from '../../assets/images/add-card.png';
@@ -10,8 +12,29 @@ import paymentCard from '../../assets/images/payment-card.png';
 import paymentCard2 from '../../assets/images/payment-card2.png';
 
 export default function Profile(props) {
+  const [userId, setUserId] = useState('');
+  const [userData, setUserData] = useState([]);
   const handleAppNavigation = path => {
     props.navigation.navigate('AppScreen', {screen: path});
+  };
+
+  useEffect(() => {
+    getUserId();
+    getData();
+  }, []);
+
+  const getUserId = async () => {
+    const data = await AsyncStorage.getItem('userId');
+    setUserId(data);
+  };
+
+  const getData = async () => {
+    try {
+      const result = await axios.get(`user/${userId}`);
+      setUserData(result.data.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -21,8 +44,12 @@ export default function Profile(props) {
           <TouchableOpacity style={styles.profileBorder}>
             <Image source={profilePicture} style={styles.profilePicture} />
           </TouchableOpacity>
-          <Text style={styles.profileName}>Aziz Akbar Ashshiddiq</Text>
-          <Text style={styles.profileJob}>Developer</Text>
+          <Text style={styles.profileName}>
+            {userData.name ? userData.name : 'Name not set!'}
+          </Text>
+          <Text style={styles.profileJob}>
+            {userData.profession ? userData.profession : 'Profession not set!'}
+          </Text>
         </View>
 
         <View style={styles.addCard}>

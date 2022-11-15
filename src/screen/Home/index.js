@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import styles from './styles';
+import axios from '../../utils/axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import slidersIcon from '../../assets/images/sliders-icon.png';
 import areaIcon from '../../assets/images/area-purple-icon.png';
@@ -10,30 +12,26 @@ import musicIcon from '../../assets/images/music-orange-icon.png';
 import EventCard from '../../components/EventCard';
 
 export default function Home(props) {
+  const [eventData, setEventData] = useState({});
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const result = await axios.get(
+        'event?page=&limit=&sort=&dateTimeShow=&name=',
+      );
+      setEventData(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleAppNav = path => {
     props.navigation.navigate('AppScreen', {screen: path});
   };
-
-  const dummyData = [
-    {
-      id: 1,
-      title: 'Sights & Sounds Exhibition',
-      date: 'Wed, 15 Nov, 4:00 PM',
-      image: require('../../assets/images/event-1.png'),
-    },
-    {
-      id: 2,
-      title: 'See it in Gold Class',
-      date: 'Wed, 15 Nov, 4:00 PM',
-      image: require('../../assets/images/event-2.png'),
-    },
-    {
-      id: 3,
-      title: 'Sights & Sounds Exhibition',
-      date: 'Wed, 15 Nov, 4:00 PM',
-      image: require('../../assets/images/event-1.png'),
-    },
-  ];
 
   return (
     <ScrollView style={styles.container}>
@@ -79,9 +77,9 @@ export default function Home(props) {
           </TouchableOpacity>
         </View>
         <ScrollView horizontal={true}>
-          {dummyData.map(item => (
+          {eventData?.data?.map(item => (
             <EventCard
-              key={item.id}
+              key={item.eventId}
               data={item}
               navigation={props.navigation}
             />

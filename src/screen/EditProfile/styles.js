@@ -65,6 +65,7 @@ export default StyleSheet.create({
   editForm: {
     color: '#3366FF',
     marginLeft: 10,
+    marginTop: 18,
     textDecorationLine: 'underline',
     letterSpacing: 1,
   },
@@ -83,5 +84,21 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     letterSpacing: 1.5,
+  },
+  editableForm: {
+    color: '#000',
+    borderBottomWidth: 1,
+    width: '85%',
+    height: 30,
+    paddingBottom: 5,
+    marginTop: 10,
+    textTransform: 'capitalize',
+  },
+  uneditableForm: {
+    color: '#000',
+    height: 30,
+    paddingBottom: 1,
+    marginTop: 10,
+    textTransform: 'capitalize',
   },
 });
