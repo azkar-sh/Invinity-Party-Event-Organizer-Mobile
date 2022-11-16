@@ -6,30 +6,30 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import axios from '../../utils/axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import profilePicture from '../../assets/images/profile1.jpg';
 import addCard from '../../assets/images/add-card.png';
 import paymentCard from '../../assets/images/payment-card.png';
 import paymentCard2 from '../../assets/images/payment-card2.png';
 
 export default function Profile(props) {
-  const [userId, setUserId] = useState('');
+  // const [userId, setUserId] = useState('');
   const [userData, setUserData] = useState([]);
   const handleAppNavigation = path => {
     props.navigation.navigate('AppScreen', {screen: path});
   };
 
   useEffect(() => {
-    getUserId();
+    // getUserId();
     getData();
   }, []);
 
-  const getUserId = async () => {
-    const data = await AsyncStorage.getItem('userId');
-    setUserId(data);
-  };
+  // const getUserId = async () => {
+  //   const data = await AsyncStorage.getItem('userId');
+  //   setUserId(data);
+  // };
 
   const getData = async () => {
     try {
+      const userId = await AsyncStorage.getItem('userId');
       const result = await axios.get(`user/${userId}`);
       setUserData(result.data.data[0]);
     } catch (error) {
@@ -37,12 +37,22 @@ export default function Profile(props) {
     }
   };
 
+  const userImage = {
+    uri: `https://res.cloudinary.com/drkoj1bvv/image/upload/v1663649636/${userData.image}`,
+  };
+  const randomImage = {
+    uri: `https://ui-avatars.com/api/?size=512&background=random&name=${userData.username}`,
+  };
+
   return (
     <ScrollView style={styles.backgroundTop}>
       <View style={styles.container}>
         <View style={styles.profileContainer}>
           <TouchableOpacity style={styles.profileBorder}>
-            <Image source={profilePicture} style={styles.profilePicture} />
+            <Image
+              source={userData.image != null ? userImage : randomImage}
+              style={styles.profilePicture}
+            />
           </TouchableOpacity>
           <Text style={styles.profileName}>
             {userData.name ? userData.name : 'Name not set!'}

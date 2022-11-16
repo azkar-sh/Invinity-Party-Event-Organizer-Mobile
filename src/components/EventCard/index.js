@@ -13,8 +13,8 @@ import event1 from '../../assets/images/event-1.png';
 import arrowLeft from '../../assets/images/arrow-left.png';
 
 export default function EventCard(props) {
-  const handleDetailEvent = () => {
-    props.navigation.navigate('Detail Event');
+  const handleDetailEvent = id => {
+    props.navigation.navigate('Detail Event', {eventId: props.data?.eventId});
   };
 
   const image = {

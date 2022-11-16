@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItem,
@@ -12,21 +12,22 @@ import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function DrawerContent(props) {
-  const [userId, setUserId] = useState('');
+  // const [userId, setUserId] = useState('');
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
-    getUserId();
+    // getUserId();
     getData();
   }, []);
 
-  const getUserId = async () => {
-    const data = await AsyncStorage.getItem('userId');
-    setUserId(data);
-  };
+  // const getUserId = async () => {
+  //   const data = await AsyncStorage.getItem('userId');
+  //   setUserId(data);
+  // };
 
   const getData = async () => {
     try {
+      const userId = await AsyncStorage.getItem('userId');
       const result = await axios.get(`user/${userId}`);
       setUserData(result.data.data[0]);
     } catch (error) {
@@ -44,11 +45,21 @@ function DrawerContent(props) {
       });
     } catch (error) {}
   };
+
+  const userImage = {
+    uri: `https://res.cloudinary.com/drkoj1bvv/image/upload/v1663649636/${userData.image}`,
+  };
+  const randomImage = {
+    uri: `https://ui-avatars.com/api/?background=random&name=${userData.username}`,
+  };
   return (
     <View style={styles.container}>
       <DrawerContentScrollView {...props}>
         <View style={styles.containerProfile}>
-          <View style={styles.avatar} />
+          <Image
+            source={userData.image !== null ? userImage : randomImage}
+            style={styles.avatar}
+          />
           <View style={styles.biodata}>
             <Text style={styles.title}>
               {userData.name ? userData.name : 'Set Your Name!'}

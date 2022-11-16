@@ -21,23 +21,24 @@ export default function EditProfile(props) {
   const [editableProfession, setEditableProfession] = useState(true);
   const [editableNationality, setEditableNationality] = useState(true);
   const [editableBirthday, setEditableBirthday] = useState(true);
-  const [userId, setUserId] = useState('');
+  // const [userId, setUserId] = useState('');
   const [userData, setUserData] = useState([]);
 
   const [form, setForm] = useState({});
 
   useEffect(() => {
-    getUserId();
+    // getUserId();
     getData();
   }, []);
 
-  const getUserId = async () => {
-    const data = await AsyncStorage.getItem('userId');
-    setUserId(data);
-  };
+  // const getUserId = async () => {
+  //   const data = await AsyncStorage.getItem('userId');
+  //   setUserId(data);
+  // };
 
   const getData = async () => {
     try {
+      const userId = await AsyncStorage.getItem('userId');
       const result = await axios.get(`user/${userId}`);
       setUserData(result.data.data[0]);
     } catch (error) {
@@ -51,6 +52,7 @@ export default function EditProfile(props) {
 
   const handleSubmit = async () => {
     try {
+      const userId = await AsyncStorage.getItem('userId');
       const update = await axios.patch(`user/${userId}`, form);
       alert(update.data.msg);
       props.navigation.replace('AppScreen', {screen: 'Profile'});
@@ -63,12 +65,22 @@ export default function EditProfile(props) {
     props.navigation.navigate('AppScreen', {screen: path});
   };
 
+  const userImage = {
+    uri: `https://res.cloudinary.com/drkoj1bvv/image/upload/v1663649636/${userData.image}`,
+  };
+  const randomImage = {
+    uri: `https://ui-avatars.com/api/?size=512&background=random&name=${userData.username}`,
+  };
+
   return (
     <ScrollView style={styles.backgroundTop}>
       <View style={styles.container}>
         <View style={styles.profileContainer}>
           <TouchableOpacity style={styles.profileBorder}>
-            <Image source={profilePicture} style={styles.profilePicture} />
+            <Image
+              source={userData.image !== null ? userImage : randomImage}
+              style={styles.profilePicture}
+            />
           </TouchableOpacity>
           <Text style={styles.profileName}>
             {userData.name ? userData.name : 'Not set'}

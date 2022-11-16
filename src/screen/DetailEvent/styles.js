@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {margin: 25, marginTop: 50},
   imageBanner: {
     width: '100%',
-    height: 800,
+    height: 1000,
   },
   textOverlay: {
     marginHorizontal: 25,

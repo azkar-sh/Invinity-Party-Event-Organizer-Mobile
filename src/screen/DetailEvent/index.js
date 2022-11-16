@@ -6,24 +6,52 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from '../../utils/axios';
 
 import styles from './styles';
 import event1 from '../../assets/images/event-1.png';
 import maps from '../../assets/images/maps.png';
 import attendance from '../../assets/images/attendance.png';
 
-export default function DetailEvent() {
+export default function DetailEvent(props) {
+  const eventId = props.route.params.eventId;
+  const [eventData, setEventData] = useState({});
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const result = await axios.get(`event/${eventId}`);
+      setEventData(result.data.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const image = {
+    uri: `https://res.cloudinary.com/drkoj1bvv/image/upload/v1663649636/${eventData.image}`,
+  };
+
   return (
     <ScrollView>
-      <ImageBackground source={event1} style={styles.imageBanner}>
+      <ImageBackground
+        source={eventData?.image !== null ? image : event1}
+        style={styles.imageBanner}>
         <View style={styles.textOverlay}>
-          <Text style={styles.title}>Sights & Sounds Exhibition</Text>
+          <Text style={styles.title}>
+            {eventData.name ? eventData.name : 'Exiting Event'}
+          </Text>
           <View style={styles.textFlex}>
             <Icon name="map-pin" color="magenta" size={20} />
-            <Text style={styles.dateLocation}>Jakarta, Indonesia</Text>
+            <Text style={styles.dateLocation}>
+              {eventData.location ? eventData.location : 'Indonesia'}
+            </Text>
           </View>
           <View style={styles.textFlex}>
             <MaterialIcon
@@ -31,7 +59,11 @@ export default function DetailEvent() {
               color="magenta"
               size={20}
             />
-            <Text style={styles.dateLocation}>Wed, 15 Nov, 4:00 PM</Text>
+            <Text style={styles.dateLocation}>
+              {eventData.dateTimeShow
+                ? eventData.dateTimeShow
+                : 'Wed, 15 Nov 2022'}
+            </Text>
           </View>
           <Text style={styles.smallText}>Attendance</Text>
           <Image source={attendance} />
@@ -41,8 +73,9 @@ export default function DetailEvent() {
       <View style={styles.eventDetailContainer}>
         <Text style={styles.eventDetailTitle}>Event Detail</Text>
         <Text style={styles.eventDetailText}>
-          After his controversial art exhibition "Tear and Consume" back in
-          November 2018, in which guests were invited to tear up…
+          {eventData.detail
+            ? eventData.detail
+            : 'Something exitment will come. Stay tune!'}
         </Text>
 
         <Text style={styles.eventDetailTitle}>Location</Text>

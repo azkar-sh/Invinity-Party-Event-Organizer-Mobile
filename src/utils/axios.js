@@ -1,12 +1,12 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// const axiosApiIntances = axios.create({
-//   baseURL: 'https://event-organizing-backend.vercel.app/api/',
-// });
 const axiosApiIntances = axios.create({
-  baseURL: 'http://192.168.0.11:3001/api/',
+  baseURL: 'https://invinity-party-event-organizer-backend.vercel.app/api/',
 });
+// const axiosApiIntances = axios.create({
+//   baseURL: 'http://192.168.0.11:3001/api/',
+// });
 
 // Add a request interceptor
 axiosApiIntances.interceptors.request.use(

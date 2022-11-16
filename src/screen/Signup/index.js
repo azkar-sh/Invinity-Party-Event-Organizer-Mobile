@@ -77,7 +77,7 @@ export default function Signup(props) {
               secureTextEntry={showConfirmPassword}
               placeholder="Confirm Password"
               style={styles.authForm}
-              onChangeText={text => handleChange('confirmPassword', text)}
+              onChangeText={text => handleChange('confirmpassword', text)}
             />
             <TouchableOpacity
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}>

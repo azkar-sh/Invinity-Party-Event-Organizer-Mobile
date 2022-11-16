@@ -13,15 +13,16 @@ import EventCard from '../../components/EventCard';
 
 export default function Home(props) {
   const [eventData, setEventData] = useState({});
+  const [searchName, setSearchName] = useState('');
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [searchName]);
 
   const getData = async () => {
     try {
       const result = await axios.get(
-        'event?page=&limit=&sort=&dateTimeShow=&name=',
+        `event?page=&limit=&sort=&dateTimeShow=&name=${searchName}`,
       );
       setEventData(result.data);
     } catch (error) {
@@ -39,6 +40,7 @@ export default function Home(props) {
         placeholder="Search Event"
         placeholderTextColor="#FFFFFF"
         style={styles.form}
+        onChangeText={text => setSearchName(text)}
       />
       {/* Date Selection */}
       <View style={styles.dateContainer}>
