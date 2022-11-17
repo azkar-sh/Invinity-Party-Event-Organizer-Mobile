@@ -117,7 +117,7 @@ export default function Order() {
 
   return (
     <View style={{alignItems: 'center'}}>
-      <Image source={require('../../assets/seat.png')} />
+      <Image source={require('../../assets/images/seat.png')} />
       <Text>{JSON.stringify(listBooking)}</Text>
       <Button
         title="Payment Screen"

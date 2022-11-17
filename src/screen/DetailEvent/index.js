@@ -9,7 +9,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '../../utils/axios';
 
 import styles from './styles';
@@ -36,6 +35,11 @@ export default function DetailEvent(props) {
 
   const image = {
     uri: `https://res.cloudinary.com/drkoj1bvv/image/upload/v1663649636/${eventData.image}`,
+  };
+
+  const handleAppNavigation = path => {
+    props.navigation.navigate('AppScreen', {screen: path});
+    // console.log(path);
   };
 
   return (
@@ -81,7 +85,9 @@ export default function DetailEvent(props) {
         <Text style={styles.eventDetailTitle}>Location</Text>
         <Image source={maps} style={styles.eventMaps} />
 
-        <TouchableOpacity style={styles.buyButton}>
+        <TouchableOpacity
+          style={styles.buyButton}
+          onPress={() => handleAppNavigation('Order Detail')}>
           <Text style={styles.textButton}>Buy Tickets</Text>
         </TouchableOpacity>
       </View>

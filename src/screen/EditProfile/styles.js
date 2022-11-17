@@ -45,6 +45,7 @@ export default StyleSheet.create({
     marginBottom: 20,
   },
   labelForm: {
+    color: '#000000',
     fontSize: 16,
     fontWeight: 'bold',
     letterSpacing: 1,
@@ -86,7 +87,7 @@ export default StyleSheet.create({
     letterSpacing: 1.5,
   },
   editableForm: {
-    color: '#000',
+    color: '#000000',
     borderBottomWidth: 1,
     width: '85%',
     height: 30,
@@ -95,7 +96,7 @@ export default StyleSheet.create({
     textTransform: 'capitalize',
   },
   uneditableForm: {
-    color: '#000',
+    color: '#000000',
     height: 30,
     paddingBottom: 1,
     marginTop: 10,

@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import styles from './styles';
 import axios from '../../utils/axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import notifee from '@notifee/react-native';
 
 import GoogleIcon from '../../assets/images/google-icon.png';
 import FacebookIcon from '../../assets/images/facebook-icon.png';
@@ -49,6 +50,31 @@ export default function Signin(props) {
     }
   };
 
+  async function onDisplayNotification() {
+    // Request permissions (required for iOS)
+    // await notifee.requestPermission();
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'Notification Title',
+      body: 'Main body content of the notification',
+      android: {
+        channelId,
+        // smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  }
+
   return (
     <ScrollView style={styles.signinContainer}>
       <Text style={styles.signinTitle}>Log In</Text>
@@ -84,7 +110,11 @@ export default function Signin(props) {
           Forgot Password?
         </Text>
 
-        <BlueWhite text="Log In" onPress={handleLogin} />
+        <BlueWhite
+          text="Log In"
+          // onPress={handleLogin}
+          onPress={() => onDisplayNotification()}
+        />
 
         <Text style={styles.signupSubtitle}>
           Don't Have an Account?{' '}

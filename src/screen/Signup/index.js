@@ -25,7 +25,7 @@ export default function Signup(props) {
       alert(result.data.msg);
       props.navigation.replace('AuthScreen', {screen: 'Login'});
     } catch (error) {
-      alert(error.response.data.msg);
+      alert(error.response.data);
     }
   };
 
