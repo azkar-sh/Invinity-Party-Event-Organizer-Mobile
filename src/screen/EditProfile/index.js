@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './styles';
-import DatePicker from 'react-native-date-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from '../../utils/axios';
+
+import {useDispatch, useSelector} from 'react-redux';
+import {getDataUserById, updateDataUser} from '../../stores/actions/user';
+// import {getDataUserById} from '../../stores/actions/user';
 
 export default function EditProfile(props) {
+  const dispatch = useDispatch();
   const [editableUsername, setEditableUsername] = useState(true);
   const [editableEmail, setEditableEmail] = useState(true);
   const [editablePhone, setEditablePhone] = useState(true);
@@ -21,36 +23,21 @@ export default function EditProfile(props) {
   const [editableNationality, setEditableNationality] = useState(true);
   const [editableBirthday, setEditableBirthday] = useState(true);
 
-  const [userData, setUserData] = useState([]);
+  const userData = useSelector(state => state.user.userData[0]);
 
   const [form, setForm] = useState({});
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    try {
-      const userId = await AsyncStorage.getItem('userId');
-      const result = await axios.get(`user/${userId}`);
-      setUserData(result.data.data[0]);
-    } catch (error) {
-      alert(error.response.data.msg);
-    }
-  };
 
   const handleChange = (name, value) => {
     setForm({...form, [name]: value});
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     try {
-      const userId = await AsyncStorage.getItem('userId');
-      const update = await axios.patch(`user/${userId}`, form);
-      alert(update.data.msg);
-      props.navigation.navigate('AppScreen', {screen: 'Profile'});
+      dispatch(updateDataUser(userData.userId, form)).then(
+        dispatch(getDataUserById(userData.userId)),
+      );
     } catch (error) {
-      alert(error.response.data.msg);
+      console.log(error.value);
     }
   };
 

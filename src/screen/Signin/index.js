@@ -17,8 +17,13 @@ import notifee from '@notifee/react-native';
 import GoogleIcon from '../../assets/images/google-icon.png';
 import FacebookIcon from '../../assets/images/facebook-icon.png';
 import FingerprintIcon from '../../assets/images/fingerprint-icon.png';
+import {useDispatch} from 'react-redux';
+import {login} from '../../stores/actions/auth';
+import {getDataEvent} from '../../stores/actions/event';
+import {getDataUserById} from '../../stores/actions/user';
 
 export default function Signin(props) {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(true);
   const [form, setForm] = useState({});
 
@@ -36,14 +41,16 @@ export default function Signin(props) {
 
   const handleLogin = async () => {
     try {
-      const result = await axios.post('auth/login', form);
-      await AsyncStorage.setItem('userId', result.data.data.userId);
-      await AsyncStorage.setItem('token', result.data.data.token);
-      await AsyncStorage.setItem(
-        'resfreshToken',
-        result.data.data.refreshToken,
-      );
-      alert(result.data.msg);
+      dispatch(login(form)).then(async response => {
+        await AsyncStorage.setItem('token', response.value.data.data.token);
+        await AsyncStorage.setItem(
+          'resfreshToken',
+          response.value.data.data.refreshToken,
+        );
+        dispatch(getDataUserById(response.value.data.data.userId));
+        dispatch(getDataEvent(''));
+      });
+      alert('Login Successfully!');
       props.navigation.replace('AppScreen', {screen: 'MenuNavigator'});
     } catch (error) {
       alert(error.response.data.msg);
@@ -112,8 +119,8 @@ export default function Signin(props) {
 
         <BlueWhite
           text="Log In"
-          // onPress={handleLogin}
-          onPress={() => onDisplayNotification()}
+          onPress={handleLogin}
+          // onPress={() => onDisplayNotification()}
         />
 
         <Text style={styles.signupSubtitle}>

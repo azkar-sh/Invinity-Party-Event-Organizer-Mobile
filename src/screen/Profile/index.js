@@ -1,40 +1,19 @@
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import axios from '../../utils/axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import addCard from '../../assets/images/add-card.png';
 import paymentCard from '../../assets/images/payment-card.png';
 import paymentCard2 from '../../assets/images/payment-card2.png';
+import {useSelector} from 'react-redux';
 
 export default function Profile(props) {
-  // const [userId, setUserId] = useState('');
-  const [userData, setUserData] = useState([]);
+  const userData = useSelector(state => state.user.userData[0]);
+
   const handleAppNavigation = path => {
     props.navigation.navigate('AppScreen', {screen: path});
-  };
-
-  useEffect(() => {
-    // getUserId();
-    getData();
-  }, []);
-
-  // const getUserId = async () => {
-  //   const data = await AsyncStorage.getItem('userId');
-  //   setUserId(data);
-  // };
-
-  const getData = async () => {
-    try {
-      const userId = await AsyncStorage.getItem('userId');
-      const result = await axios.get(`user/${userId}`);
-      setUserData(result.data.data[0]);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const userImage = {
