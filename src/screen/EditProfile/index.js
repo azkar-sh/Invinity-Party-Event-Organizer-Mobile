@@ -5,13 +5,14 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  PermissionsAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import styles from './styles';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {getDataUserById, updateDataUser} from '../../stores/actions/user';
-// import {getDataUserById} from '../../stores/actions/user';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export default function EditProfile(props) {
   const dispatch = useDispatch();
@@ -33,13 +34,69 @@ export default function EditProfile(props) {
 
   const handleSubmit = () => {
     try {
-      dispatch(updateDataUser(userData.userId, form)).then(
-        dispatch(getDataUserById(userData.userId)),
-      );
+      const formData = new FormData();
+      formData.append('id', userData.id);
+      formData.append('username', form.username);
+      formData.append('email', form.email);
+      formData.append('phone', form.phone);
+      formData.append('image', {
+        uri: form.image,
+        type: 'image/jpeg',
+        name: 'image.jpg',
+      });
+      dispatch(updateDataUser(userData.userId, formData));
+      // dispatch(updateDataUser(userData.userId, form)).then(
+      //   response => alert(response.value.data.message),
+      //   dispatch(getDataUserById(userData.userId)),
+      // );
     } catch (error) {
       console.log(error.value);
     }
   };
+
+  const selectPhotos = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Cool Photo App Camera Permission',
+          message: 'Cool Photo App needs access to your camera ',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        launchCamera(
+          {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 200,
+            maxWidth: 200,
+          },
+          response => {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            }
+            if (response.errorCode) {
+              console.log('ImagePicker Error: ', response.errorMessage);
+            }
+            if (response.assets) {
+              const source = {uri: response.assets[0].uri};
+              setForm({...form, image: source});
+            }
+          },
+        );
+      } else {
+        // launchCamera();
+        console.log('Camera permission denied');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(form);
 
   const handleAppNavigation = path => {
     props.navigation.navigate('AppScreen', {screen: path});
@@ -56,7 +113,7 @@ export default function EditProfile(props) {
     <ScrollView style={styles.backgroundTop}>
       <View style={styles.container}>
         <View style={styles.profileContainer}>
-          <TouchableOpacity style={styles.profileBorder}>
+          <TouchableOpacity style={styles.profileBorder} onPress={selectPhotos}>
             <Image
               source={userData.image !== null ? userImage : randomImage}
               style={styles.profilePicture}

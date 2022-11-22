@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -15,6 +16,7 @@ import Wishlist from '../screen/Wishlist';
 import Profile from '../screen/Profile';
 import EditProfile from '../screen/EditProfile';
 import Order from '../screen/Order';
+import MyOrder from '../screen/MyOrder';
 
 // import Profile from '../screen/Profile';
 
@@ -48,7 +50,27 @@ function MenuNavigator() {
         }}
       />
       {/* MY BOOKING */}
+      <Drawer.Screen
+        name="My Booking"
+        component={Booking}
+        options={{
+          header: props => <HeaderDefault {...props} name="My Booking" />,
+          drawerIcon: ({size, color}) => (
+            <Entypo name="ticket" color={color} size={size} />
+          ),
+        }}
+      />
       {/* MY WISHLIST */}
+      <Drawer.Screen
+        name="My Wishlist"
+        component={Wishlist}
+        options={{
+          header: props => <HeaderDefault {...props} name="My Wishlist" />,
+          drawerIcon: ({size, color}) => (
+            <Entypo name="heart" color={color} size={size} />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 }

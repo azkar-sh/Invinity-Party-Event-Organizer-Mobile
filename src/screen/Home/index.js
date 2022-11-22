@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import styles from './styles';
 import axios from '../../utils/axios';
@@ -10,21 +10,25 @@ import areaIcon from '../../assets/images/area-purple-icon.png';
 import musicIcon from '../../assets/images/music-orange-icon.png';
 
 import EventCard from '../../components/EventCard';
+import {useDispatch, useSelector} from 'react-redux';
+import {getDataEvent} from '../../stores/actions/event';
 
 export default function Home(props) {
+  const dispatch = useDispatch();
   const [eventData, setEventData] = useState({});
   const [searchName, setSearchName] = useState('');
+  const eventCards = useSelector(state => state.event.allEvent);
+
+  console.log(eventCards);
 
   useEffect(() => {
     getData();
   }, [searchName]);
 
-  const getData = async () => {
+  const getData = () => {
     try {
-      const result = await axios.get(
-        `event?page=&limit=&sort=&dateTimeShow=&name=${searchName}`,
-      );
-      setEventData(result.data);
+      const result = dispatch(getDataEvent(searchName));
+      setEventData(result.value.data);
     } catch (error) {
       console.log(error);
     }
@@ -33,6 +37,8 @@ export default function Home(props) {
   const handleAppNav = path => {
     props.navigation.navigate('AppScreen', {screen: path});
   };
+
+  console.log('eventData', eventData);
 
   return (
     <ScrollView style={styles.container}>
@@ -78,7 +84,20 @@ export default function Home(props) {
             <Image source={slidersIcon} />
           </TouchableOpacity>
         </View>
-        <ScrollView horizontal={true}>
+
+        <FlatList
+          data={eventCards}
+          horizontal={true}
+          renderItem={({item}) => (
+            <EventCard
+              key={item.eventId}
+              data={item}
+              navigation={props.navigation}
+            />
+          )}
+        />
+
+        {/* <ScrollView horizontal={true}>
           {eventData?.data?.map(item => (
             <EventCard
               key={item.eventId}
@@ -86,7 +105,7 @@ export default function Home(props) {
               navigation={props.navigation}
             />
           ))}
-        </ScrollView>
+        </ScrollView> */}
 
         {/* Discover */}
         <Text style={styles.title}>Discover</Text>

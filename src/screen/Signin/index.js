@@ -21,6 +21,7 @@ import {useDispatch} from 'react-redux';
 import {login} from '../../stores/actions/auth';
 import {getDataEvent} from '../../stores/actions/event';
 import {getDataUserById} from '../../stores/actions/user';
+import {getDataWishlistByUserId} from '../../stores/actions/wishlist';
 
 export default function Signin(props) {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ export default function Signin(props) {
           response.value.data.data.refreshToken,
         );
         dispatch(getDataUserById(response.value.data.data.userId));
+        dispatch(getDataWishlistByUserId(response.value.data.data.userId));
         dispatch(getDataEvent(''));
       });
       alert('Login Successfully!');

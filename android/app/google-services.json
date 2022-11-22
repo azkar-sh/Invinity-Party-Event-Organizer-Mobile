@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "425370564836",
+    "project_id": "invitictkz",
+    "storage_bucket": "invitictkz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425370564836:android:ec388e5175284392d894f1",
+        "android_client_info": {
+          "package_name": "com.invitickz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425370564836-cmppe3cefb0ar00bbifiq7emtp8e4v9h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXcLAicLtt6j6SXXSN3d-mRTyyTrqUCig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425370564836-cmppe3cefb0ar00bbifiq7emtp8e4v9h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
