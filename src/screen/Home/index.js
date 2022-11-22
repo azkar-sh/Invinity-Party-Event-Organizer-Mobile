@@ -19,8 +19,6 @@ export default function Home(props) {
   const [searchName, setSearchName] = useState('');
   const eventCards = useSelector(state => state.event.allEvent);
 
-  console.log(eventCards);
-
   useEffect(() => {
     getData();
   }, [searchName]);

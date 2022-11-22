@@ -1,9 +1,53 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Button, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import styles from './styles';
+import BlueWhite from '../../components/CustomButton/blueWhite';
+
+import regTicket from '../../assets/images/reg-ticket.png';
+import vipTicket from '../../assets/images/vip-ticket.png';
+import vvipTicket from '../../assets/images/vvip-ticket.png';
 
 export default function Order() {
   const [listBooking, setListBooking] = useState([]);
+  const [regTicketCount, setRegTicketCount] = useState(0);
+  const [vipTicketCount, setVipTicketCount] = useState(0);
+  const [vvipTicketCount, setVvipTicketCount] = useState(0);
+
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const incrementCount = ticketType => {
+    if (ticketType === 'reg') {
+      setRegTicketCount(regTicketCount + 1);
+    } else if (ticketType === 'vip') {
+      setVipTicketCount(vipTicketCount + 1);
+    } else if (ticketType === 'vvip') {
+      setVvipTicketCount(vvipTicketCount + 1);
+    }
+  };
+
+  const decrementCount = ticketType => {
+    if (ticketType === 'reg') {
+      if (regTicketCount > 0) {
+        setRegTicketCount(regTicketCount - 1);
+      }
+    } else if (ticketType === 'vip') {
+      if (vipTicketCount > 0) {
+        setVipTicketCount(vipTicketCount - 1);
+      }
+    } else if (ticketType === 'vvip') {
+      if (vvipTicketCount > 0) {
+        setVvipTicketCount(vvipTicketCount - 1);
+      }
+    }
+  };
 
   useEffect(() => {
     getDataBooking();
@@ -116,16 +160,117 @@ export default function Order() {
   };
 
   return (
-    <View style={{alignItems: 'center'}}>
-      <Image source={require('../../assets/images/seat.png')} />
-      <Text>{JSON.stringify(listBooking)}</Text>
-      <Button
+    <ScrollView style={styles.backgroundTop}>
+      <View style={styles.container}>
+        <Image
+          source={require('../../assets/images/seat.png')}
+          style={styles.image}
+        />
+        <View style={styles.tableheaderContainer}>
+          <Text style={styles.tableheaderTitle}>Tickets</Text>
+          <Text style={styles.tableheaderPrice}>By Price</Text>
+          <TouchableOpacity>
+            <Image
+              source={require('../../assets/images/sort-button.png')}
+              style={styles.tableheaderSort}
+            />
+          </TouchableOpacity>
+        </View>
+        {/* Regular Ticket */}
+        <View>
+          <View style={styles.tableBody}>
+            <Image source={regTicket} style={styles.ticketImage} />
+            <View style={styles.ticketName}>
+              <Text style={styles.titleText}>SECTION REGULAR</Text>
+              <Text style={styles.subtitle}>Ticket Available</Text>
+              <View style={styles.quantityContainer}>
+                <Text style={styles.quantity}>Quantity</Text>
+                <View style={styles.quantityForm}>
+                  <TouchableOpacity
+                    style={styles.quantityButtonMinus}
+                    onPress={decrementCount}>
+                    <Text>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.quantityAmount}>{regTicketCount}</Text>
+                  <TouchableOpacity
+                    style={styles.quantityButtonPlus}
+                    onPress={() => incrementCount()}>
+                    <Text>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+            <View style={styles.ticketPrice}>
+              <Text style={styles.titleText}>$15</Text>
+              <Text style={styles.subtitle}>per person</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* VIP TICKET */}
+        <View>
+          <View style={styles.tableBody}>
+            <Image source={vipTicket} style={styles.ticketImage} />
+            <View style={styles.ticketName}>
+              <Text style={styles.titleText}>SECTION VIP</Text>
+              <Text style={styles.subtitle}>Ticket Available</Text>
+              <View style={styles.quantityContainer}>
+                <Text style={styles.quantity}>Quantity</Text>
+                <View style={styles.quantityForm}>
+                  <TouchableOpacity style={styles.quantityButtonMinus}>
+                    <Text>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.quantityAmount}>1</Text>
+                  <TouchableOpacity style={styles.quantityButtonPlus}>
+                    <Text>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+            <View style={styles.ticketPrice}>
+              <Text style={styles.titleText}>$35</Text>
+              <Text style={styles.subtitle}>per person</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* VVIP TICKET */}
+        <View>
+          <View style={styles.tableBody}>
+            <Image source={vvipTicket} style={styles.ticketImage} />
+            <View style={styles.ticketName}>
+              <Text style={styles.titleText}>SECTION VVIP</Text>
+              <Text style={styles.subtitle}>Ticket Available</Text>
+              <View style={styles.quantityContainer}>
+                <Text style={styles.quantity}>Quantity</Text>
+                <View style={styles.quantityForm}>
+                  <TouchableOpacity style={styles.quantityButtonMinus}>
+                    <Text>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.quantityAmount}>1</Text>
+                  <TouchableOpacity style={styles.quantityButtonPlus}>
+                    <Text>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+            <View style={styles.ticketPrice}>
+              <Text style={styles.titleText}>$50</Text>
+              <Text style={styles.subtitle}>per person</Text>
+            </View>
+          </View>
+        </View>
+
+        <BlueWhite text="Checkout" />
+        {/* <Text>{JSON.stringify(listBooking)}</Text> */}
+        {/* <Button
         title="Payment Screen"
         onPress={() => {
           getDataBooking();
           // props.navigation.navigate('Payment');
         }}
-      />
-    </View>
+      /> */}
+      </View>
+    </ScrollView>
   );
 }

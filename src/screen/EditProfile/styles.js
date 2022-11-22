@@ -86,6 +86,12 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 1.5,
   },
+  radioButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
   editableForm: {
     color: '#000000',
     borderBottomWidth: 1,
@@ -93,6 +99,15 @@ export default StyleSheet.create({
     height: 30,
     paddingBottom: 5,
     marginTop: 10,
+    textTransform: 'capitalize',
+  },
+  editableFormPicker: {
+    color: '#000000',
+    borderWidth: 2,
+    borderColor: '#C1C5D0',
+    borderRadius: 10,
+    marginTop: 10,
+    marginBottom: 20,
     textTransform: 'capitalize',
   },
   uneditableForm: {

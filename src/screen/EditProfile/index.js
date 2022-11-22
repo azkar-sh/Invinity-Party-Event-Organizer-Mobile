@@ -11,8 +11,14 @@ import React, {useState} from 'react';
 import styles from './styles';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {getDataUserById, updateDataUser} from '../../stores/actions/user';
+import {
+  getDataUserById,
+  updateDataUser,
+  updateImageUser,
+} from '../../stores/actions/user';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {Picker} from '@react-native-picker/picker';
+import {RadioButton} from 'react-native-paper';
 
 export default function EditProfile(props) {
   const dispatch = useDispatch();
@@ -24,9 +30,11 @@ export default function EditProfile(props) {
   const [editableNationality, setEditableNationality] = useState(true);
   const [editableBirthday, setEditableBirthday] = useState(true);
 
+  const [checked, setChecked] = useState('male');
   const userData = useSelector(state => state.user.userData[0]);
 
   const [form, setForm] = useState({});
+  const [formImage, setFormImage] = useState({});
 
   const handleChange = (name, value) => {
     setForm({...form, [name]: value});
@@ -34,23 +42,45 @@ export default function EditProfile(props) {
 
   const handleSubmit = () => {
     try {
-      const formData = new FormData();
-      formData.append('id', userData.id);
-      formData.append('username', form.username);
-      formData.append('email', form.email);
-      formData.append('phone', form.phone);
-      formData.append('image', {
-        uri: form.image,
-        type: 'image/jpeg',
-        name: 'image.jpg',
-      });
-      dispatch(updateDataUser(userData.userId, formData));
-      // dispatch(updateDataUser(userData.userId, form)).then(
-      //   response => alert(response.value.data.message),
+      // const formData = new FormData();
+      // formData.append('name', form.name);
+      // formData.append('username', form.username);
+      // formData.append('email', form.email);
+      // formData.append('phone', form.phone);
+      // formData.append('gender', form.gender);
+      // formData.append('profession', form.profession);
+      // formData.append('nationality', form.nationality);
+      // formData.append('nationality', form.nationality);
+      // formData.append('dateOfBirth', form.dateOfBirth);
+      // dispatch(updateDataUser(userData.userId, formData)).then(
+      //   response => alert('Update Data Successfull!'),
       //   dispatch(getDataUserById(userData.userId)),
       // );
+      // formData.append('image', {
+      //   uri: form.image,
+      //   type: 'image/jpeg',
+      //   name: 'image.jpg',
+      // });
+      dispatch(updateDataUser(userData.userId, form)).then(
+        response => alert('Update Data Successfull!'),
+        dispatch(getDataUserById(userData.userId)),
+        // props.navigation.navigate('Profile'),
+      );
     } catch (error) {
       console.log(error.value);
+    }
+  };
+
+  const handleChoosePhoto = () => {
+    try {
+      const formDataImage = new FormData();
+      formDataImage.append('image', formImage);
+      dispatch(updateImageUser(userData.userId, formDataImage)).then(
+        response => alert(response.value.data.message),
+        dispatch(getDataUserById(userData.userId)),
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -82,21 +112,22 @@ export default function EditProfile(props) {
               console.log('ImagePicker Error: ', response.errorMessage);
             }
             if (response.assets) {
-              const source = {uri: response.assets[0].uri};
-              setForm({...form, image: source});
+              const source = {
+                uri: response.assets[0].uri,
+                type: response.assets[0].type,
+                name: response.assets[0].fileName,
+              };
+              setFormImage({...formImage, image: source});
             }
           },
         );
       } else {
-        // launchCamera();
         console.log('Camera permission denied');
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(form);
 
   const handleAppNavigation = path => {
     props.navigation.navigate('AppScreen', {screen: path});
@@ -108,6 +139,8 @@ export default function EditProfile(props) {
   const randomImage = {
     uri: `https://ui-avatars.com/api/?size=512&background=random&name=${userData.username}`,
   };
+
+  console.log(form);
 
   return (
     <ScrollView style={styles.backgroundTop}>
@@ -167,13 +200,6 @@ export default function EditProfile(props) {
             editable={editableEmail ? false : true}
             onChangeText={text => handleChange('email', text)}
           />
-          <TouchableOpacity>
-            <Text
-              style={styles.editForm}
-              onPress={() => setEditableEmail(!editableEmail)}>
-              Edit
-            </Text>
-          </TouchableOpacity>
         </View>
 
         <Text style={styles.labelForm}>Phone</Text>
@@ -198,62 +224,59 @@ export default function EditProfile(props) {
 
         <Text style={styles.labelForm}>Gender</Text>
         <View style={styles.flexForm}>
-          <TextInput
-            placeholder={userData.gender ? userData.gender : '-'}
-            placeholderTextColor="gray"
-            style={editableGender ? styles.uneditableForm : styles.editableForm}
-            editable={editableGender ? false : true}
-            onChangeText={text => handleChange('gender', text)}
-          />
-          <TouchableOpacity>
-            <Text
-              style={styles.editForm}
-              onPress={() => setEditableGender(!editableGender)}>
-              Edit
-            </Text>
-          </TouchableOpacity>
+          <RadioButton.Group
+            onValueChange={text => handleChange('gender', text)}>
+            <View style={styles.radioButtons}>
+              <RadioButton value="Male" />
+              <Text style={{marginRight: 30}}>Male</Text>
+
+              <RadioButton value="Female" />
+              <Text>Female</Text>
+            </View>
+          </RadioButton.Group>
         </View>
 
         <Text style={styles.labelForm}>Profession</Text>
-        <View style={styles.flexForm}>
-          <TextInput
-            placeholder={userData.profession ? userData.profession : 'Not set'}
-            placeholderTextColor="gray"
-            style={
-              editableProfession ? styles.uneditableForm : styles.editableForm
-            }
-            editable={editableProfession ? false : true}
-            onChangeText={text => handleChange('profession', text)}
-          />
-          <TouchableOpacity>
-            <Text
-              style={styles.editForm}
-              onPress={() => setEditableProfession(!editableProfession)}>
-              Edit
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.editableFormPicker}>
+          <Picker
+            selectedValue={form.profession}
+            onValueChange={itemValue => handleChange('profession', itemValue)}>
+            <Picker.Item
+              label={
+                userData.profession
+                  ? userData.profession
+                  : 'Choose your profession'
+              }
+              value=""
+            />
+            <Picker.Item label="Student" value="Student" />
+            <Picker.Item label="Teacher" value="Teacher" />
+            <Picker.Item label="Doctor" value="Doctor" />
+            <Picker.Item label="Engineer" value="Engineer" />
+            <Picker.Item label="Other" value="Other" />
+          </Picker>
         </View>
 
         <Text style={styles.labelForm}>Nationality</Text>
-        <View style={styles.flexForm}>
-          <TextInput
-            placeholder={
-              userData.nationality ? userData.nationality : 'Not set'
-            }
-            placeholderTextColor="gray"
-            style={
-              editableNationality ? styles.uneditableForm : styles.editableForm
-            }
-            editable={editableNationality ? false : true}
-            onChangeText={text => handleChange('nationality', text)}
-          />
-          <TouchableOpacity>
-            <Text
-              style={styles.editForm}
-              onPress={() => setEditableNationality(!editableNationality)}>
-              Edit
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.editableFormPicker}>
+          <Picker
+            selectedValue={form.nationality}
+            onValueChange={itemValue => handleChange('nationality', itemValue)}>
+            <Picker.Item
+              label={
+                userData.nationality
+                  ? userData.nationality
+                  : 'Choose your nationality'
+              }
+              value=""
+            />
+            <Picker.Item label="Indonesia" value="Indonesia" />
+            <Picker.Item label="Malaysia" value="Malaysia" />
+            <Picker.Item label="Singapore" value="Singapore" />
+            <Picker.Item label="India" value="India" />
+            <Picker.Item label="Japan" value="Japan" />
+            <Picker.Item label="Other" value="Other" />
+          </Picker>
         </View>
 
         <Text style={styles.labelForm}>Birthday Date</Text>
