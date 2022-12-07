@@ -22,4 +22,32 @@ export default StyleSheet.create({
     marginBottom: 20,
     letterSpacing: 1,
   },
+  wishlistContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    marginHorizontal: 5,
+    alignItems: 'center',
+    elevation: 5,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 10,
+  },
+  dateContainer: {
+    flexDirection: 'column',
+    marginRight: '10%',
+    alignItems: 'center',
+    elevation: 1,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 10,
+  },
+  date: {
+    fontSize: 16,
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  month: {
+    fontSize: 16,
+    color: 'blue',
+  },
 });

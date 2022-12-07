@@ -42,18 +42,22 @@ export default function Signin(props) {
 
   const handleLogin = async () => {
     try {
-      dispatch(login(form)).then(async response => {
-        await AsyncStorage.setItem('token', response.value.data.data.token);
-        await AsyncStorage.setItem(
-          'resfreshToken',
-          response.value.data.data.refreshToken,
-        );
-        dispatch(getDataUserById(response.value.data.data.userId));
-        dispatch(getDataWishlistByUserId(response.value.data.data.userId));
-        dispatch(getDataEvent(''));
-      });
-      alert('Login Successfully!');
-      props.navigation.replace('AppScreen', {screen: 'MenuNavigator'});
+      dispatch(login(form))
+        .then(async response => {
+          await AsyncStorage.setItem('token', response.value.data.data.token);
+          await AsyncStorage.setItem(
+            'resfreshToken',
+            response.value.data.data.refreshToken,
+          );
+          dispatch(getDataUserById(response.value.data.data.userId));
+          dispatch(getDataWishlistByUserId(response.value.data.data.userId));
+          dispatch(getDataEvent(''));
+          alert('Login Successfully!');
+          props.navigation.replace('AppScreen', {screen: 'MenuNavigator'});
+        })
+        .catch(() => {
+          alert('Your Username or Password incorrect');
+        });
     } catch (error) {
       alert(error.response.data.msg);
     }

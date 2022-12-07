@@ -1,13 +1,13 @@
-import {View, Text, ScrollView, FlatList} from 'react-native';
+import {View, Text, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import React from 'react';
 import styles from './styles';
 import {useSelector} from 'react-redux';
 import BlueWhite from '../../components/CustomButton/blueWhite';
 import axios from '../../utils/axios';
+import moment from 'moment/moment';
 
 export default function EditProfile(props) {
   const wishlist = useSelector(state => state.wishlist.wishlistData);
-  const event = useSelector(state => state.event.eventData);
 
   const handleNavHome = () => {
     props.navigation.navigate('Home');
@@ -29,7 +29,31 @@ export default function EditProfile(props) {
           <FlatList
             data={wishlist}
             keyExtractor={item => item.wishlistId}
-            renderItem={({item}) => <Text>{item.eventId}</Text>}
+            renderItem={({item}) => (
+              <>
+                <TouchableOpacity
+                  onPress={() =>
+                    props.navigation.navigate('Detail Event', {
+                      eventId: item.eventId,
+                    })
+                  }>
+                  <View style={styles.wishlistContainer}>
+                    <View style={styles.dateContainer}>
+                      <Text style={styles.date}>
+                        {moment(item.event.dateTimeShow).format('DD')}
+                      </Text>
+                      <Text style={styles.month}>
+                        {moment(item.event.dateTimeShow).format('MMM')}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text>{item.event.name}</Text>
+                      <Text>{item.event.location}</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </>
+            )}
           />
         )}
       </View>

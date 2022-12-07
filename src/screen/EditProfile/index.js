@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   TextInput,
   PermissionsAndroid,
+  Modal,
+  Pressable,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import styles from './styles';
@@ -22,12 +25,10 @@ import {RadioButton} from 'react-native-paper';
 
 export default function EditProfile(props) {
   const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
   const [editableUsername, setEditableUsername] = useState(true);
   const [editableEmail, setEditableEmail] = useState(true);
   const [editablePhone, setEditablePhone] = useState(true);
-  const [editableGender, setEditableGender] = useState(true);
-  const [editableProfession, setEditableProfession] = useState(true);
-  const [editableNationality, setEditableNationality] = useState(true);
   const [editableBirthday, setEditableBirthday] = useState(true);
 
   const [checked, setChecked] = useState('male');
@@ -42,25 +43,6 @@ export default function EditProfile(props) {
 
   const handleSubmit = () => {
     try {
-      // const formData = new FormData();
-      // formData.append('name', form.name);
-      // formData.append('username', form.username);
-      // formData.append('email', form.email);
-      // formData.append('phone', form.phone);
-      // formData.append('gender', form.gender);
-      // formData.append('profession', form.profession);
-      // formData.append('nationality', form.nationality);
-      // formData.append('nationality', form.nationality);
-      // formData.append('dateOfBirth', form.dateOfBirth);
-      // dispatch(updateDataUser(userData.userId, formData)).then(
-      //   response => alert('Update Data Successfull!'),
-      //   dispatch(getDataUserById(userData.userId)),
-      // );
-      // formData.append('image', {
-      //   uri: form.image,
-      //   type: 'image/jpeg',
-      //   name: 'image.jpg',
-      // });
       dispatch(updateDataUser(userData.userId, form)).then(
         response => alert('Update Data Successfull!'),
         dispatch(getDataUserById(userData.userId)),
@@ -71,20 +53,26 @@ export default function EditProfile(props) {
     }
   };
 
-  const handleChoosePhoto = () => {
+  const handleUpdatePhoto = () => {
+    // console.log(formImage);
     try {
       const formDataImage = new FormData();
-      formDataImage.append('image', formImage);
-      dispatch(updateImageUser(userData.userId, formDataImage)).then(
-        response => alert(response.value.data.message),
-        dispatch(getDataUserById(userData.userId)),
-      );
+      formDataImage.append('image', formImage.image);
+      dispatch(updateImageUser(userData.userId, formDataImage))
+        .then(
+          response => alert(response.value.data.message),
+          dispatch(getDataUserById(userData.userId)),
+        )
+        .catch(error => {
+          // console.log(error);
+          alert(error);
+        });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const selectPhotos = async () => {
+  const cameraLaunched = async () => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -129,6 +117,51 @@ export default function EditProfile(props) {
     }
   };
 
+  const galleryLaunched = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Cool Photo App Camera Permission',
+          message: 'Cool Photo App needs access to your camera ',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        launchImageLibrary(
+          {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 200,
+            maxWidth: 200,
+          },
+          response => {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            }
+            if (response.errorCode) {
+              console.log('ImagePicker Error: ', response.errorMessage);
+            }
+            if (response.assets) {
+              const source = {
+                uri: response.assets[0].uri,
+                type: response.assets[0].type,
+                name: response.assets[0].fileName,
+              };
+              setFormImage({...formImage, image: source});
+            }
+          },
+        );
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleAppNavigation = path => {
     props.navigation.navigate('AppScreen', {screen: path});
   };
@@ -140,13 +173,13 @@ export default function EditProfile(props) {
     uri: `https://ui-avatars.com/api/?size=512&background=random&name=${userData.username}`,
   };
 
-  console.log(form);
-
   return (
     <ScrollView style={styles.backgroundTop}>
       <View style={styles.container}>
         <View style={styles.profileContainer}>
-          <TouchableOpacity style={styles.profileBorder} onPress={selectPhotos}>
+          <TouchableOpacity
+            style={styles.profileBorder}
+            onPress={() => setModalVisible(true)}>
             <Image
               source={userData.image !== null ? userImage : randomImage}
               style={styles.profilePicture}
@@ -301,9 +334,41 @@ export default function EditProfile(props) {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.buyButton} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.buyButton} onPress={handleUpdatePhoto}>
           <Text style={styles.textButton}>Save</Text>
         </TouchableOpacity>
+
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Update Image</Text>
+                <TouchableOpacity
+                  style={styles.buttonUpdateImage}
+                  onPress={cameraLaunched}>
+                  <Text style={styles.textButtonUpdateCamera}>Camera</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.buttonUpdateImage}
+                  onPress={galleryLaunched}>
+                  <Text style={styles.textButtonUpdateGalery}>Gallery</Text>
+                </TouchableOpacity>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Cancel</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+        </View>
       </View>
     </ScrollView>
   );

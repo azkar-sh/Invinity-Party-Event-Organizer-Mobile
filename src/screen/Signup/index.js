@@ -19,7 +19,6 @@ export default function Signup(props) {
   };
 
   const handleSubmit = async data => {
-    // console.log(form);
     try {
       const result = await axios.post('auth/register', form);
       alert(result.data.msg);

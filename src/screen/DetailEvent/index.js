@@ -39,7 +39,6 @@ export default function DetailEvent(props) {
 
   const handleAppNavigation = path => {
     props.navigation.navigate('AppScreen', {screen: path});
-    // console.log(path);
   };
 
   return (
