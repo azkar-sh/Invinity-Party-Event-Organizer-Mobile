@@ -102,4 +102,41 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     color: '#000',
   },
+  totalContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  subTotalContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  checkoutButton: {
+    backgroundColor: '#3366FF',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    width: '75%',
+  },
+  checkoutText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#FFF',
+    textAlign: 'center',
+    letterSpacing: 1,
+  },
+  subTotalText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#000',
+    letterSpacing: 1,
+  },
+  subTotalPrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#3366FF',
+    letterSpacing: 1,
+  },
 });

@@ -12,15 +12,9 @@ import event1 from '../../assets/images/event-1.png';
 
 import arrowLeft from '../../assets/images/arrow-left.png';
 
-export default function EventCard(props) {
+export default function AllEventCard(props) {
   const handleDetailEvent = id => {
-    props.navigation.navigate(
-      'Detail Event',
-      {eventId: props.data?.eventId},
-      state => {
-        eventId: props.data?.eventId;
-      },
-    );
+    props.navigation.navigate('Detail Event', {eventId: props.data?.eventId});
   };
 
   const image = {

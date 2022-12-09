@@ -49,6 +49,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
     marginTop: 20,
+    letterSpacing: 2,
   },
   sliderBox: {
     borderRadius: 10,

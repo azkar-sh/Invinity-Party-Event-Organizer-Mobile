@@ -16,6 +16,7 @@ import Wishlist from '../screen/Wishlist';
 import Profile from '../screen/Profile';
 import EditProfile from '../screen/EditProfile';
 import Order from '../screen/Order';
+import AllEvent from '../screen/AllEvent';
 import MyOrder from '../screen/MyOrder';
 
 // import Profile from '../screen/Profile';
@@ -104,6 +105,14 @@ export default function AppStackNavigator() {
         component={Order}
         options={{
           header: props => <HeaderDefault {...props} name="Order Detail" />,
+        }}
+      />
+      {/* All Event */}
+      <Stack.Screen
+        name="All Event"
+        component={AllEvent}
+        options={{
+          header: props => <HeaderDefault {...props} name="All Event" />,
         }}
       />
       {/* PAYMENT */}

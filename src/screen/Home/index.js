@@ -104,7 +104,9 @@ export default function Home(props) {
         {/* Events for You */}
         <View style={styles.eventTitle}>
           <Text style={styles.title}>Events For You</Text>
-          <TouchableOpacity style={styles.sliderBox}>
+          <TouchableOpacity
+            style={styles.sliderBox}
+            onPress={() => handleAppNav('All Event')}>
             <Image source={slidersIcon} />
           </TouchableOpacity>
         </View>
@@ -120,16 +122,6 @@ export default function Home(props) {
             />
           )}
         />
-
-        {/* <ScrollView horizontal={true}>
-          {eventData?.data?.map(item => (
-            <EventCard
-              key={item.eventId}
-              data={item}
-              navigation={props.navigation}
-            />
-          ))}
-        </ScrollView> */}
 
         {/* Discover */}
         <Text style={styles.title}>Discover</Text>

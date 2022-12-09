@@ -18,7 +18,7 @@ function DrawerContent(props) {
   const handleLogout = async () => {
     try {
       await axios.post('auth/logout');
-      alert('Your Successfully Logout');
+      alert('Logout Successfully');
       await AsyncStorage.clear();
       props.navigation.replace('AuthScreen', {
         screen: 'Login',

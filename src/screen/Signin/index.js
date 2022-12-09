@@ -51,12 +51,12 @@ export default function Signin(props) {
           );
           dispatch(getDataUserById(response.value.data.data.userId));
           dispatch(getDataWishlistByUserId(response.value.data.data.userId));
-          dispatch(getDataEvent(''));
-          alert('Login Successfully!');
+          dispatch(getDataEvent());
+          alert(response.value.data.msg);
           props.navigation.replace('AppScreen', {screen: 'MenuNavigator'});
         })
-        .catch(() => {
-          alert('Your Username or Password incorrect');
+        .catch(error => {
+          alert(error.response.data.msg);
         });
     } catch (error) {
       alert(error.response.data.msg);

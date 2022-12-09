@@ -21,7 +21,7 @@ export default function Order() {
   const [vipTicketCount, setVipTicketCount] = useState(0);
   const [vvipTicketCount, setVvipTicketCount] = useState(0);
 
-  const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
 
   const incrementCount = ticketType => {
     if (ticketType === 'reg') {
@@ -48,6 +48,9 @@ export default function Order() {
       }
     }
   };
+
+  const totalPrice =
+    regTicketCount * 15 + vipTicketCount * 35 + vvipTicketCount * 50;
 
   useEffect(() => {
     getDataBooking();
@@ -188,13 +191,13 @@ export default function Order() {
                 <View style={styles.quantityForm}>
                   <TouchableOpacity
                     style={styles.quantityButtonMinus}
-                    onPress={decrementCount}>
+                    onPress={() => decrementCount('reg')}>
                     <Text>-</Text>
                   </TouchableOpacity>
                   <Text style={styles.quantityAmount}>{regTicketCount}</Text>
                   <TouchableOpacity
                     style={styles.quantityButtonPlus}
-                    onPress={() => incrementCount()}>
+                    onPress={() => incrementCount('reg')}>
                     <Text>+</Text>
                   </TouchableOpacity>
                 </View>
@@ -217,11 +220,15 @@ export default function Order() {
               <View style={styles.quantityContainer}>
                 <Text style={styles.quantity}>Quantity</Text>
                 <View style={styles.quantityForm}>
-                  <TouchableOpacity style={styles.quantityButtonMinus}>
+                  <TouchableOpacity
+                    onPress={() => decrementCount('vip')}
+                    style={styles.quantityButtonMinus}>
                     <Text>-</Text>
                   </TouchableOpacity>
-                  <Text style={styles.quantityAmount}>1</Text>
-                  <TouchableOpacity style={styles.quantityButtonPlus}>
+                  <Text style={styles.quantityAmount}>{vipTicketCount}</Text>
+                  <TouchableOpacity
+                    style={styles.quantityButtonPlus}
+                    onPress={() => incrementCount('vip')}>
                     <Text>+</Text>
                   </TouchableOpacity>
                 </View>
@@ -244,11 +251,15 @@ export default function Order() {
               <View style={styles.quantityContainer}>
                 <Text style={styles.quantity}>Quantity</Text>
                 <View style={styles.quantityForm}>
-                  <TouchableOpacity style={styles.quantityButtonMinus}>
+                  <TouchableOpacity
+                    style={styles.quantityButtonMinus}
+                    onPress={() => decrementCount('vvip')}>
                     <Text>-</Text>
                   </TouchableOpacity>
-                  <Text style={styles.quantityAmount}>1</Text>
-                  <TouchableOpacity style={styles.quantityButtonPlus}>
+                  <Text style={styles.quantityAmount}>{vvipTicketCount}</Text>
+                  <TouchableOpacity
+                    style={styles.quantityButtonPlus}
+                    onPress={() => incrementCount('vvip')}>
                     <Text>+</Text>
                   </TouchableOpacity>
                 </View>
@@ -261,15 +272,15 @@ export default function Order() {
           </View>
         </View>
 
-        <BlueWhite text="Checkout" />
-        {/* <Text>{JSON.stringify(listBooking)}</Text> */}
-        {/* <Button
-        title="Payment Screen"
-        onPress={() => {
-          getDataBooking();
-          // props.navigation.navigate('Payment');
-        }}
-      /> */}
+        <View style={styles.totalContainer}>
+          <TouchableOpacity style={styles.checkoutButton}>
+            <Text style={styles.checkoutText}>Checkout</Text>
+          </TouchableOpacity>
+          <View style={styles.subTotalContainer}>
+            <Text style={styles.subTotalText}>Price</Text>
+            <Text style={styles.subTotalPrice}>$ {totalPrice}</Text>
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
